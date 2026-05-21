@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accounts</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/accounts.css" />
+  <link rel="manifest" href="../../manifest.json" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Trading Journal" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="../../src/icons/icon-192.png" />
+</head>
+<body>
+  <div class="sidebar">
+    <div class="top">
+      <h2>Trading Journal</h2>
+      <div class="nav-group">
+        <a href="../../index.html" class="nav-item">Dashboard</a>
+        <a href="trades.html" class="nav-item">Trades</a>
+        <a href="calendar.html" class="nav-item">Calendar</a>
+      </div>
+    </div>
+
+    <div class="settings">
+      <a href="accounts.html" class="nav-item active">Accounts</a>
+    </div>
+  </div>
+
+  <main class="main accounts-main">
+    <header class="page-header">
+      <h1>Accounts</h1>
+      <button class="primary-btn" id="openAccountModal">+ Add Account</button>
+    </header>
+
+    <section class="accounts-grid" id="accountsGrid" aria-label="Accounts list"></section>
+    <p class="empty-state" id="emptyState">No accounts yet. Create your first account.</p>
+  </main>
+
+  <div class="modal" id="accountModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add Account</h2>
+        <button class="icon-btn" id="closeAccountModal" type="button" aria-label="Close">×</button>
+      </div>
+
+      <form id="accountForm" class="account-form">
+        <input type="hidden" id="accountId" />
+
+        <label>
+          Account Name
+          <input type="text" id="accountName" placeholder="Example: My 100K Challenge" required />
+        </label>
+
+
+        <label>
+          Currency
+          <select id="currency" required>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="JPY">JPY</option>
+            <option value="CAD">CAD</option>
+            <option value="AUD">AUD</option>
+          </select>
+        </label>
+
+        <label>
+          Starting Balance
+          <input type="number" id="startingBalance" step="any" min="0" placeholder="100000" required />
+        </label>
+
+        <div class="form-actions">
+          <button type="button" class="secondary-btn" id="cancelAccountForm">Cancel</button>
+          <button type="submit" class="primary-btn">Save Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/accounts.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('../../service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

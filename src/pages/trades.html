@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trades</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/trades.css" />
+  <link rel="manifest" href="../../manifest.json" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Trading Journal" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="../../src/icons/icon-192.png" />
+</head>
+<body>
+  <div class="sidebar">
+    <div class="top">
+      <h2>Trading Journal</h2>
+      <div class="nav-group">
+        <a class="nav-item" href="../../index.html">Dashboard</a>
+        <a class="nav-item active" href="trades.html">Trades</a>
+        <a class="nav-item" href="calendar.html">Calendar</a>
+      </div>
+    </div>
+    <div class="settings">
+      <a class="nav-item" href="accounts.html">Accounts</a>
+    </div>
+  </div>
+
+  <main class="main trades-main">
+    <header class="page-header">
+      <h1>All Trades</h1>
+      <button class="new-btn" id="openTradeForm">+ Add Trade</button>
+    </header>
+
+    <section class="view-tabs" aria-label="Trade views">
+      <button class="view-tab active" data-view="table">Table</button>
+      <button class="view-tab" data-view="gallery">Gallery</button>
+      <button class="view-tab" data-view="monthly">Monthly</button>
+    </section>
+
+    <section class="table-card view-panel active" id="tableView">
+      <table class="trade-table">
+        <thead>
+          <tr>
+            <th class="sticky-col">Pair</th>
+            <th>Date</th>
+            <th>Direction</th>
+            <th>Account</th>
+            <th>Confluences</th>
+            <th>Entry</th>
+            <th>Stop Loss</th>
+            <th>Take Profit</th>
+            <th>Lot Size</th>
+            <th>Fees</th>
+            <th>P&amp;L</th>
+            <th>Result %</th>
+            <th>Risk %</th>
+            <th>Session</th>
+            <th>Emotion</th>
+            <th>Screenshot</th>
+            <th>Notes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tradesTableBody"></tbody>
+      </table>
+      <p class="empty-state" id="emptyState">No trades found.</p>
+    </section>
+
+    <section class="gallery-grid view-panel" id="galleryView"></section>
+    <section class="monthly-grid view-panel" id="monthlyView"></section>
+  </main>
+
+  <div class="modal" id="tradeModal" aria-hidden="true">
+    <div class="modal-content professional-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle">Add New Trade</h2>
+        </div>
+        <button class="icon-btn" id="closeTradeForm" aria-label="Close form">×</button>
+      </div>
+
+      <form id="tradeForm" class="trade-form professional-form">
+        <input type="hidden" id="tradeId" />
+        <input type="hidden" id="screenshotData" />
+
+        <section class="form-section execution-section">
+          <div class="section-title">
+            <span>Trade Execution</span>
+          </div>
+
+          <div class="form-grid two-col">
+            <label>
+              Pair / Asset
+              <input type="text" id="pair" list="pairSuggestions" placeholder="EUR/USD, XAU/USD, MNQ" required />
+            </label>
+
+            <label>
+              Date
+              <input type="date" id="tradeDate" required />
+            </label>
+
+            <label>
+              Direction / Result
+              <input type="text" id="direction" list="directionSuggestions" placeholder="Long, Short, Breakeven" required />
+            </label>
+
+            <label>
+              Account
+              <input type="text" id="account" list="accountSuggestions" placeholder="Choose one of your saved accounts" required />
+            </label>
+
+            <label>
+              Entry Price
+              <input type="number" id="entry" step="any" min="0" placeholder="0.00" required />
+            </label>
+
+            <label>
+              Stop Loss
+              <input type="number" id="stopLoss" step="any" min="0" placeholder="0.00" />
+            </label>
+
+            <label>
+              Take Profit
+              <input type="number" id="takeProfit" step="any" min="0" placeholder="0.00" />
+            </label>
+
+            <label>
+              Exit Price
+              <input type="number" id="exit" step="any" min="0" placeholder="0.00" required />
+            </label>
+
+            <label>
+              Lot Size
+              <input type="number" id="lotSize" step="any" min="0" placeholder="1.00" required />
+            </label>
+
+            <label>
+              Fees
+              <input type="number" id="fees" step="any" min="0" placeholder="0.00" />
+            </label>
+
+            <label>
+              Profit / Loss
+              <input type="number" id="pnl" step="any" placeholder="Use negative for a loss" required />
+            </label>
+
+            <label>
+              Result %
+              <input type="number" id="resultPercent" step="any" placeholder="Example: 2.5" />
+            </label>
+
+            <label>
+              Risk %
+              <input type="number" id="riskPercent" step="any" min="0" placeholder="Example: 1" />
+            </label>
+
+            <label>
+              Session
+              <input type="text" id="session" list="sessionSuggestions" placeholder="Asia, London, New York" />
+            </label>
+          </div>
+
+          <div class="calculation-card" id="calculationSummary">
+            <span>Risk/Reward</span>
+            <strong id="rrPreview">—</strong>
+            <small id="resultPreview">Complete entry, SL and TP to estimate R:R.</small>
+          </div>
+        </section>
+
+        <section class="form-section journal-section">
+          <label class="full-label">
+            Confluences
+            <div class="tag-selector" id="confluenceSelector" aria-label="Confluence selector">
+              <button type="button" data-value="BOS">BOS</button>
+              <button type="button" data-value="CHOCH">CHOCH</button>
+              <button type="button" data-value="FVG">FVG</button>
+              <button type="button" data-value="Liquidity Sweep">Sweep</button>
+              <button type="button" data-value="AMD">AMD</button>
+              <button type="button" data-value="Fibonacci">Fibonacci</button>
+              <button type="button" data-value="Order Block">Order Block</button>
+              <button type="button" data-value="Breaker">Breaker</button>
+              <button type="button" data-value="Mitigation">Mitigation</button>
+              <button type="button" data-value="Trendline">Trendline</button>
+              <button type="button" data-value="Support/Resistance">S/R</button>
+              <button type="button" data-value="Volume">Volume</button>
+            </div>
+            <input type="hidden" id="confirmation" />
+          </label>
+
+          <label>
+            Emotion Tag
+            <select id="emotionTag">
+              <option value="">Select emotion</option>
+              <option>Calm</option>
+              <option>Confident</option>
+              <option>Disciplined</option>
+              <option>Patient</option>
+              <option>Fear</option>
+              <option>FOMO</option>
+              <option>Greedy</option>
+              <option>Revenge</option>
+            </select>
+          </label>
+
+          <label>
+            Trade Notes
+            <textarea id="tradeNote" rows="7" placeholder="What happened? What did you learn? What will you improve next time?"></textarea>
+          </label>
+
+          <label class="upload-box" for="screenshotUpload">
+            <span>Screenshot Upload</span>
+            <strong id="uploadText">Click to upload a chart screenshot</strong>
+            <input type="file" id="screenshotUpload" accept="image/*" />
+            <img id="screenshotPreview" alt="Screenshot preview" />
+          </label>
+        </section>
+
+        <div class="form-actions">
+          <button type="button" class="secondary-btn" id="cancelForm">Cancel</button>
+          <button type="submit" class="new-btn save-btn">Save Trade</button>
+        </div>
+      </form>
+
+      <datalist id="pairSuggestions">
+        <option value="EUR/USD"></option>
+        <option value="GBP/USD"></option>
+        <option value="USD/JPY"></option>
+        <option value="XAU/USD"></option>
+        <option value="BTC/USDT"></option>
+        <option value="ETH/USDT"></option>
+        <option value="NASDAQ"></option>
+        <option value="US30"></option>
+        <option value="S&P 500"></option>
+        <option value="MNQ"></option>
+        <option value="NQ"></option>
+      </datalist>
+
+      <datalist id="accountSuggestions"></datalist>
+      <datalist id="directionSuggestions">
+        <option value="Long"></option>
+        <option value="Short"></option>
+        <option value="Breakeven"></option>
+      </datalist>
+
+      <datalist id="sessionSuggestions">
+        <option value="Asia"></option>
+        <option value="London"></option>
+        <option value="New York"></option>
+        <option value="London + New York"></option>
+        <option value="Other"></option>
+      </datalist>
+
+    </div>
+  </div>
+
+  <script src="../js/trades.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('../../service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

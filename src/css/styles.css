@@ -1,0 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+body {
+  display: flex;
+  height: 100vh;
+  background: white;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+  width: 250px;
+  background-color: #0b1f3a;
+
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+
+  padding: 20px;
+}
+
+/* TOP CONTENT */
+.top {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   NAV LINKS
+========================= */
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* BASE ITEM */
+.nav-item {
+  text-decoration: none;
+  color: #ffffff;
+
+  padding: 12px;
+  border-radius: 8px;
+
+  display: block;
+  width: 100%;
+
+  position: relative;
+
+  transition: all 0.25s ease;
+}
+
+/* =========================
+   HOVER (ONLY ACTIVE EFFECT)
+========================= */
+.nav-item:hover {
+  color: #ffffff;
+
+  transform: translateX(4px);
+
+  background: linear-gradient(
+    135deg,
+    #6d4aff,
+    #5b3df5
+  );
+
+  box-shadow:
+    0 10px 25px rgba(109, 74, 255, 0.35),
+    0 0 18px rgba(109, 74, 255, 0.25);
+}
+
+/* =========================
+   SETTINGS (BOTTOM FIX)
+========================= */
+.settings {
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+.main {
+  flex: 1;
+  padding: 40px;
+}
+
+.header {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+/* Active page state */
+.nav-item.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #6d4aff, #5b3df5);
+  box-shadow: 0 10px 25px rgba(109, 74, 255, 0.25);
+}
+
+/* Basic responsive sidebar */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .settings {
+    margin-top: 15px;
+  }
+
+  .main {
+    padding: 20px;
+  }
+}

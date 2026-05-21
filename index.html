@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Dashboard</title>
+  <link rel="stylesheet" href="src/css/styles.css">
+  <link rel="stylesheet" href="src/css/dashboard.css">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Trading Journal" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="src/icons/icon-192.png" />
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="top">
+      <h2>Trading Journal</h2>
+
+      <div class="nav-group">
+        <a class="nav-item active" href="index.html">Dashboard</a>
+        <a class="nav-item" href="src/pages/trades.html">Trades</a>
+        <a class="nav-item" href="src/pages/calendar.html">Calendar</a>
+      </div>
+    </div>
+
+    <div class="settings">
+      <a class="nav-item" href="src/pages/accounts.html">Accounts</a>
+    </div>
+  </div>
+
+  <main class="main dashboard-main">
+    <header class="page-header">
+      <h1>Dashboard</h1>
+    </header>
+
+    <section class="metric-grid" aria-label="Dashboard statistics">
+      <article class="metric-card highlight-card">
+        <span>Total P&amp;L</span>
+        <strong id="totalPnl">$0.00</strong>
+      </article>
+
+      <article class="metric-card">
+        <span>Total Trades</span>
+        <strong id="totalTrades">0</strong>
+        <div class="trade-breakdown">
+          <small id="winsText">0 Wins</small>
+          <small id="lossesText">0 Losses</small>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <span>Expectancy</span>
+        <strong id="profitFactor">$0.00</strong>
+      </article>
+    </section>
+
+    <section class="panel equity-panel" aria-label="Equity curve">
+      <div class="panel-header">
+        <h2>Equity Curve</h2>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="equityChart"></canvas>
+        <div class="chart-tooltip" id="equityTooltip"></div>
+      </div>
+    </section>
+
+    <section class="analytics-grid" aria-label="Dashboard analytics">
+      <article class="panel winrate-panel">
+        <div class="panel-header">
+          <h2>Win Rate</h2>
+        </div>
+        <div class="gauge-wrap">
+          <canvas id="winRateChart"></canvas>
+          <strong id="winRateValue">0%</strong>
+        </div>
+        <div class="legend-row">
+          <span><i class="dot green-dot"></i><span id="legendWins">0 Wins</span></span>
+          <span><i class="dot red-dot"></i><span id="legendLosses">0 Losses</span></span>
+          <span><i class="dot gray-dot"></i><span id="legendBE">0 BE</span></span>
+        </div>
+      </article>
+
+      <article class="panel best-asset-panel">
+        <div class="panel-header">
+          <h2>Best Assets</h2>
+        </div>
+        <div class="asset-summary">
+          <div class="asset-row best">
+            <span>Best Asset</span>
+            <strong id="bestAsset">—</strong>
+            <em id="bestAssetPnl">$0.00</em>
+          </div>
+          <div class="asset-row worst">
+            <span>Worst Asset</span>
+            <strong id="worstAsset">—</strong>
+            <em id="worstAssetPnl">$0.00</em>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel session-panel" aria-label="Session performance">
+      <div class="panel-header">
+        <h2>Session Performance</h2>
+      </div>
+      <div class="session-list" id="sessionList"></div>
+    </section>
+
+    <section class="panel recent-panel" aria-label="Recent trades">
+      <div class="panel-header">
+        <h2>Recent Trades</h2>
+        <strong id="recentCount">0 latest</strong>
+      </div>
+      <div class="recent-list" id="recentTrades"></div>
+    </section>
+  </main>
+
+  <script src="src/js/dashboard.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
